@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Bancário</title>
+    <!-- Ligação com o ficheiro CSS externo na pasta static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>-------- Sistema Bancário --------</h1>
+
+    <!-- Mensagem de resposta das operações -->
+    {% if mensagem %}
+        <div class="mensagem">{{ mensagem }}</div>
+    {% endif %}
+
+    <!-- 1. Cadastrar Cliente -->
+    <div class="opcao">
+        <h3>1. Cadastrar Cliente</h3>
+        <form method="POST">
+            <input type="hidden" name="operacao" value="1">
+            <input type="text" name="nome" placeholder="Digite o nome do cliente" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <!-- 2. Cadastrar Conta -->
+    <div class="opcao">
+        <h3>2. Cadastrar Conta</h3>
+        <form method="POST">
+            <input type="hidden" name="operacao" value="2">
+            <input type="text" name="nome" placeholder="Digite o nome do cliente" required>
+            <button type="submit">Criar Conta</button>
+        </form>
+    </div>
+
+    <!-- 4 e 5. Procurar Conta / Consultar Saldo -->
+    <div class="opcao">
+        <h3>4/5. Procurar Conta ou Consultar Saldo</h3>
+        <form method="POST">
+            <input type="hidden" name="operacao" value="4">
+            <input type="number" name="numeroConta" placeholder="Digite o número da conta" required>
+            <button type="submit">Consultar</button>
+        </form>
+    </div>
+
+    <!-- 6. Realizar Depósito -->
+    <div class="opcao">
+        <h3>6. Realizar Depósito</h3>
+        <form method="POST">
+            <input type="hidden" name="operacao" value="6">
+            <input type="number" name="numeroConta" placeholder="Número da conta" required>
+            <input type="number" step="0.01" name="deposito" placeholder="Valor do depósito (R$)" required>
+            <button type="submit">Depositar</button>
+        </form>
+    </div>
+
+    <!-- 7. Realizar Saque -->
+    <div class="opcao">
+        <h3>7. Realizar Saque</h3>
+        <form method="POST">
+            <input type="hidden" name="operacao" value="7">
+            <input type="number" name="numeroConta" placeholder="Número da conta" required>
+            <input type="number" step="0.01" name="saque" placeholder="Valor do saque (R$)" required>
+            <button type="submit">Sacar</button>
+        </form>
+    </div>
+
+    <!-- 3. Listar Contas -->
+    <div class="opcao">
+        <h3>3. Listar Contas</h3>
+        {% if listaConta %}
+            <p>Total de contas cadastradas: {{ listaConta|length }}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Cliente</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for conta in listaConta %}
+                    <tr>
+                        <td>{{ conta[0] }}</td>
+                        <td>{{ conta[1] }}</td>
+                        <td>R$ {{ "%.2f"|format(conta[2]) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhuma conta cadastrada</p>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
